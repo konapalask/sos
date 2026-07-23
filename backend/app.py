@@ -34,15 +34,19 @@ def create_app() -> Flask:
         return send_from_directory(dashboard_path, "index.html")
 
     # Create empty mock directories in backend folder to adhere to user requirements
-    backend_dir = os.path.abspath(os.path.dirname(__file__))
-    os.makedirs(os.path.join(backend_dir, "templates"), exist_ok=True)
-    os.makedirs(os.path.join(backend_dir, "static"), exist_ok=True)
+    try:
+        backend_dir = os.path.abspath(os.path.dirname(__file__))
+        os.makedirs(os.path.join(backend_dir, "templates"), exist_ok=True)
+        os.makedirs(os.path.join(backend_dir, "static"), exist_ok=True)
 
-    # Create placeholder file in templates folder
-    templates_index = os.path.join(backend_dir, "templates", "index.html")
-    if not os.path.exists(templates_index):
-        with open(templates_index, "w", encoding="utf-8") as f:
-            f.write("<!-- System Dashboard is served from root '/' or the dashboard folder -->\n")
+        # Create placeholder file in templates folder
+        templates_index = os.path.join(backend_dir, "templates", "index.html")
+        if not os.path.exists(templates_index):
+            with open(templates_index, "w", encoding="utf-8") as f:
+                f.write("<!-- System Dashboard is served from root '/' or the dashboard folder -->\n")
+    except OSError as e:
+        logger.warning(f"Skipped creating local templates/static directories (read-only system): {e}")
+
 
     # Start WhatsApp Selenium Client in a daemon thread on boot.
     # This immediately starts Chrome and loads the QR code page.

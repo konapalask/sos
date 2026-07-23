@@ -34,10 +34,23 @@ class Config:
     @classmethod
     def validate(cls):
         """Validate configurations and ensure directories exist."""
-        # Ensure log and database directories exist
-        Path(cls.DATABASE_PATH).parent.mkdir(parents=True, exist_ok=True)
-        Path(cls.LOG_FILE_PATH).parent.mkdir(parents=True, exist_ok=True)
-        Path(cls.CHROME_USER_DATA_DIR).mkdir(parents=True, exist_ok=True)
-        
+        try:
+            # Ensure log and database directories exist
+            Path(cls.DATABASE_PATH).parent.mkdir(parents=True, exist_ok=True)
+            Path(cls.LOG_FILE_PATH).parent.mkdir(parents=True, exist_ok=True)
+            Path(cls.CHROME_USER_DATA_DIR).mkdir(parents=True, exist_ok=True)
+        except OSError as e:
+            # Fallback to /tmp (the only writable directory in Vercel serverless environment)
+            print(f"Read-only filesystem detected ({e}). Falling back to /tmp storage.")
+            cls.DATABASE_PATH = "/tmp/sos.db"
+            cls.LOG_FILE_PATH = "/tmp/sos.log"
+            cls.CHROME_USER_DATA_DIR = "/tmp/selenium_session"
+            
+            # Re-attempt creation in /tmp directory
+            Path(cls.DATABASE_PATH).parent.mkdir(parents=True, exist_ok=True)
+            Path(cls.LOG_FILE_PATH).parent.mkdir(parents=True, exist_ok=True)
+            Path(cls.CHROME_USER_DATA_DIR).mkdir(parents=True, exist_ok=True)
+            
         if not cls.WHATSAPP_CONTACTS:
             print("WARNING: WHATSAPP_CONTACTS is empty. No notifications will be sent.")
+
