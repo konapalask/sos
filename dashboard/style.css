@@ -238,6 +238,8 @@ h1, h2, h3, h4, .font-outfit {
 /* Custom Table Styles */
 .custom-table {
     color: var(--text-primary);
+    background: transparent !important;
+    --bs-table-bg: transparent !important;
 }
 
 .custom-table thead th {
