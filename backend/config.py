@@ -20,7 +20,7 @@ class Config:
     LOG_FILE_PATH = str(BASE_DIR / log_path) if not Path(log_path).is_absolute() else log_path
     
     # Parse contacts list
-    contacts_str = os.getenv("WHATSAPP_CONTACTS", "")
+    contacts_str = os.getenv("WHATSAPP_CONTACTS", "919492664870")
     WHATSAPP_CONTACTS = [
         num.strip() for num in contacts_str.split(",") if num.strip()
     ]
