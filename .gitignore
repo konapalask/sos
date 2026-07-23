@@ -1,0 +1,30 @@
+# Local Environment Credentials
+.env
+
+# SQLite Database
+backend/database/sos.db
+
+# Persistent Logs
+backend/logs/sos.log
+
+# Selenium Session Caches & Profiles (contains cookies/active sessions)
+backend/selenium_session/
+
+# Python Compiled Caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Vercel Deployment Files
+.vercel/
+
+# IDE & Editor Settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
